@@ -6,18 +6,18 @@
     .factory('totalCalService',totalCalService)
     .factory('queryProductService',queryProductService);
 
-
-
   /** @ngInject */
   function productService($resource){
     return $resource('/product/:id', { id: '@_id' }, {
         update: {
-            method: 'PUT' // this method issues a PUT request
+            method: 'PUT', // this method issues a PUT request
+          params:{
+            name:'@name',
+            description: '@description',
+            totalPrice:'@totalPrice'
+          }
         }});
-
   }
-
-
   /** @ngInject */
   function totalCalService() {
     this.getTotalNetPrice = function (products) {
@@ -30,7 +30,6 @@
         return output;
     }
 }
-
 
   /** @ngInject */
   function queryProductService($resource){

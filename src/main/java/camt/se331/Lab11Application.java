@@ -10,15 +10,17 @@ public class Lab11Application {
 		SpringApplication.run(Lab11Application.class, args);
 		DBManager dbManager = new DBManager();
 		dbManager.start();
+
 	}
 }
 
 class DBManager extends Thread {
 	public void run(){
-		System.setProperty("java.awt.headless", "false");
-		org.hsqldb.util.DatabaseManagerSwing.main(new String[] {
-				"--url",  "jdbc:hsqldb:mem:testdb", "--noexit"
-		});
+//		System.setProperty("java.awt.headless", "false");
+//		org.hsqldb.util.DatabaseManagerSwing.main(new String[] {
+//				"--url",  "jdbc:mysql://localhost/WatPhaSomTest", "--noexit"
+
+//		});
 	}
 
 }

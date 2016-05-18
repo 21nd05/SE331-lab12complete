@@ -14,7 +14,9 @@ import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Dto on 2/8/2015.
@@ -62,6 +64,19 @@ public class ProductServiceImpl implements ProductService {
     public Product addImage(Product product, Image image) {
         image=ImageUtil.resizeImage(image,200);
         product.getImages().add(image);
+        productDao.updateProduct(product);
+        return product;
+    }
+
+    @Override
+    @Transactional
+    public Product deleteImage(Product product, Long imageid) {
+        Set<Image> images = product.getImages();
+        for (Iterator<Image> it = images.iterator(); it.hasNext(); ) {
+            Image f = it.next();
+            if (f.getId().equals(imageid)){
+                product.getImages().remove(f);}
+        }
         productDao.updateProduct(product);
         return product;
     }

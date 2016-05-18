@@ -29,7 +29,7 @@
     return( source );
   }
   /** @ngInject */
-  function LoginController($scope, $rootScope, $location, $cookies, UserService) {
+  function LoginController( $rootScope, $location, $cookies, UserService) {
     var vm = this;
     vm.rememberMe = false;
 

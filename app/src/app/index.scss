@@ -12,6 +12,21 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 // bower:scss
 // endbower
 
+
+
+@keyframes myChange {
+  from {
+    height: 20px;
+  } to {
+      height: 0;
+    }
+}
+
+
+div.ng-hide {
+  animation: 0.5s myChange;
+}
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -20,7 +35,11 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 }
 
 .thumbnail {
-  height: 200px;
+  max-width: 200px;
+  max-height: 150px;
+  line-height: 20px;
+  margin-bottom: 5px;
+}
 
   img.pull-right {
     width: 50px;
@@ -56,7 +75,7 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
   }
 
   .error { display: block; float: none; color: red; padding-left: 11.5em; vertical-align: top; }
-}
+
 
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject

@@ -33,6 +33,11 @@
       controllerAs: 'vm'
 
     }).
+    when('/productDetail/:id', {
+      templateUrl: 'app/product/productDetail.html',
+      controller: 'editProductController',
+      controllerAs: 'vm'
+    }).
     otherwise({redirectTo: '/listProduct'});
 
   }

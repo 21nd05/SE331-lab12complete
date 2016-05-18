@@ -9,11 +9,10 @@
 
 
   /** @ngInject */
-  function addProductController($scope, $location, $rootScope, productService, $timeout) {
+  function addProductController($location, $rootScope, productService, $timeout) {
     var vm = this;
     vm.product = {};
-    vm.addProduct = true;
-    vm.editProduct = false;
+    vm.addPerson = true;
     vm.addProduct = function (flowFiles) {
       productService.save(vm.product, function (data) {
         // after adding the object, add a new picture
@@ -24,31 +23,41 @@
         flowFiles.opts.testChunks = false;
         flowFiles.opts.query = {productid: productid};
         flowFiles.upload();
-        $timeout(function () {
-          // $message is the json response from the post
 
-        })
+        $rootScope.addSuccess = true;
+        $location.path("listProduct");
+        $route.reload();
 
       });
     }
 
-    vm.redirectToHome = function () {
-      $rootScope.addSuccess = true;
-      $location.path("listProduct");
-    }
 
   }
 
 
+
   /** @ngInject */
-  function listProductController($scope,$location, $rootScope, productService, $route, queryProductService,cartManagement) {
+  function listProductController($rootScope, productService, $route, queryProductService, $scope, cartManagement, $location) {
     var vm = this;
     //$http.get("/product/").success(function (data) {
     vm.queryPromise = productService.query(function (data) {
-      // $scope.totalNetPrice= totalCalService.getTotalNetPrice(data);
+      //vm.totalNetPrice= totalCalService.getTotalNetPrice(data);
       vm.products = data;
     }).$promise;
 
+
+    vm.addToCart = function (product) {
+      product.images = null;
+      cartManagement.addToCart({id:product.id},$rootScope.shoppingCart, function (shoppingCart) {
+        //success event
+        $rootScope.shoppingCart = shoppingCart;
+        $location.path("shoppingCart")
+
+      }, function () {
+        // fail event
+      })
+
+    }
 
     $scope.$on('$locationChangeStart', function () {
       $rootScope.addSuccess = false;
@@ -72,43 +81,47 @@
       });
     }
 
-    vm.addToCart = function (product) {
-      product.images = null;
-      cartManagement.addToCart({id:product.id},$rootScope.shoppingCart, function (shoppingCart) {
-        //success event
-        $rootScope.shoppingCart = shoppingCart;
-        $location.path("shoppingCart")
-
-      }, function () {
-        // fail event
-      })
-
-    }
-
-
   }
 
 
   /** @ngInject */
-  function editProductController($http, $routeParams, $location, $rootScope, productService) {
+  function editProductController($route, $routeParams, $location, $rootScope, productService, $http) {
     var vm = this;
-    vm.addProduct = false;
-    vm.editProduct = true;
+    vm.addPerson = false;
+    vm.editPerson = true;
     var id = $routeParams.id;
     productService.get({id: id},
       // success function
       function (data) {
         vm.product = data;
       }
-    )
+    );
 
-
-    vm.editProduct = function () {
-      //$http.put("/product", $scope.product).then(function () {
+    vm.editProduct = function (flowFiles) {  //$http.put("/product", $scope.product).then(function () {
       productService.update({id: vm.product.id}, vm.product, function () {
+        var productid = vm.product.id;
+        // set location
+        flowFiles.opts.target = 'http://localhost:8080/productImage/add';
+        flowFiles.opts.testChunks = false;
+        flowFiles.opts.query = {productid: productid};
+        flowFiles.upload();
+
         $rootScope.editSuccess = true;
         $location.path("listProduct");
+        $route.reload();
+        vm.apply();
       });
+    };
+
+    vm.deleteImage = function (id) {
+      var answer = confirm("Do you want to delete the image?");
+      if (answer) {
+        $http.delete("http://localhost:8080/productImage/remove?imageid=" + id + "&productid=" + vm.product.id).success(function (data) {
+          vm.product = data;
+        });
+      }
     }
+
+
   }
 })();

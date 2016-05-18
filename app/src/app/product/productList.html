@@ -24,7 +24,7 @@
         <div class="input-group">
           <input type="text" class="form-control" placeholder="name..." ng-model="name"/>
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="searchProduct(name)">Search</button>
+                    <button class="btn btn-default" type="button" ng-click="vm.searchProduct(name)">Search</button>
                 </span>
         </div>
         <!-- /input-group -->
@@ -39,43 +39,44 @@
         <th>#</th>
         <th translate>listProduct.name</th>
         <th translate>listProduct.description</th>
-        <th class="text-right" translate>listProduct.netPrice</th>
-        <th class="text-right" translate>listProduct.price</th>
-        <th class="text-center" translate>listProduct.picture</th>
-        <th translate ng-show="hasRole('user')">listProduct.edit</th>
+
+        <th class="text-center" translate>listProduct.price</th>
+        <th translate>listProduct.picture</th>
+        <th translate ng-show="hasRole('admin')">listProduct.edit</th>
         <th translate ng-show="hasRole('admin')">listProduct.delete</th>
         <th translate ng-show="hasRole('user')">listProduct.addToCart</th>
 
       </tr>
-      <tr ng-repeat="product in vm.products">
+      <tr ng-repeat="product in vm.products | filter:name ">
         <td>{{$index+1}}</td>
-        <td>{{product.name}}</td>
+        <td><a ng-href="#/productDetail/{{product.id}}" ng-click="vm.editProduct($flow)">{{product.name}}</a></td>
         <td>{{product.description}}</td>
-        <td class="text-right">{{product.netPrice | number}}</td>
-        <td class="text-right">{{product.totalPrice | number}}</td>
+
+        <td class="text-center">{{product.netPrice | number}}</td>
         <td>
-          <div ng-repeat="image in product.images" class="text-center" class="thumbnail">
-            <img ng-src="data:{{image.contentType}};base64,{{image.content}}">
+          <div ng-repeat="image in product.images">
+            <img ng-src="data:{{image.contentType}};base64,{{image.content}}" class="thumbnail">
           </div>
         </td>
-        <td class="text-center" ng-show="hasRole('user')"><a ng-href="#/editProduct/{{product.id}}"> <span
-          class="glyphicon glyphicon-edit"
-          aria-hidden="true"></span></a></td>
-        <td class="text-center" ng-show="hasRole('admin')"><a ng-href="#/listProduct"><span
-          class="glyphicon glyphicon-remove-circle"
-          aria-hidden="true"
-          ng-click="deleteProduct(product.id)"></span></a></td>
+        <td class="text-center" ng-show="hasRole('admin')">
+          <a ng-href="#/editProduct/{{product.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+        </td>
+        <td class="text-center" ng-show="hasRole('admin')">
+          <a ng-href="#/listProduct"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"
+                ng-click="vm.deleteProduct(product.id)"></span></a>
+        </td>
+        <td class="text-center" ng-show="hasRole('user')">
         <td class="text-center" ng-show="hasRole('user')"><a><span aria-hidden="true" ng-click="vm.addToCart(product)">addProduct</span></a>
         </td>
       </tr>
       <tr>
-        <th></th>
-        <th><strong translate>listProduct.total</strong></th>
-        <th></th>
-        <th class="text-right">{{totalNetPrice | number}}</th>
-        <th></th>
-        <th></th>
-        <th></th>
+        <td></td>
+        <td><strong translate>listProduct.total</strong></td>
+        <td></td>
+        <td class="text-right">{{totalNetPrice | number}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
 
       </tr>
     </table>

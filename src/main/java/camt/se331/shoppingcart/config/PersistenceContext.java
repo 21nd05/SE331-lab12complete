@@ -46,10 +46,10 @@ class PersistenceContext {
     private static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
 
-    private static final String PROPERTY_NAME_DB_DRIVER_CLASS = "db.driver";
-    private static final String PROPERTY_NAME_DB_PASSWORD = "db.password";
-    private static final String PROPERTY_NAME_DB_URL = "db.url";
-    private static final String PROPERTY_NAME_DB_USER = "db.username";
+    private static final String PROPERTY_NAME_DB_DRIVER_CLASS = "spring.datasource.driver-class-name";
+    private static final String PROPERTY_NAME_DB_PASSWORD = "spring.datasource.password";
+    private static final String PROPERTY_NAME_DB_URL = "spring.datasource.url";
+    private static final String PROPERTY_NAME_DB_USER = "spring.datasource.username";
 
     @Bean
     public HibernateExceptionTranslator hibernateExceptionTranslator() {
@@ -59,7 +59,7 @@ class PersistenceContext {
 
     @Autowired
     private Environment env;
-    @Bean
+
     public DataSource embedDataSource(){
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         EmbeddedDatabase db = builder.setType(EmbeddedDatabaseType.HSQL).setScriptEncoding("UTF-8").build();
@@ -68,25 +68,25 @@ class PersistenceContext {
     }
 
 
-
-    public BoneCPDataSource boneCPDataSource(){
-        BoneCPDataSource boneCPDataSource = new BoneCPDataSource();
-        boneCPDataSource.setDriverClass(env.getRequiredProperty(PROPERTY_NAME_DB_DRIVER_CLASS));
-        boneCPDataSource.setJdbcUrl(env.getRequiredProperty(PROPERTY_NAME_DB_URL));
-        boneCPDataSource.setUsername(env.getRequiredProperty(PROPERTY_NAME_DB_USER));
-        boneCPDataSource.setPassword(env.getRequiredProperty(PROPERTY_NAME_DB_PASSWORD));
-        boneCPDataSource.setIdleConnectionTestPeriodInMinutes(60);
-        boneCPDataSource.setIdleMaxAgeInMinutes(420);
-        boneCPDataSource.setMaxConnectionsPerPartition(30);
-        boneCPDataSource.setMinConnectionsPerPartition(10);
-        boneCPDataSource.setPartitionCount(3);
-        boneCPDataSource.setAcquireIncrement(5);
-        boneCPDataSource.setStatementsCacheSize(100);
-
-
-        return boneCPDataSource;
-
-    }
+//    @Bean
+//    public BoneCPDataSource boneCPDataSource(){
+//        BoneCPDataSource boneCPDataSource = new BoneCPDataSource();
+//        boneCPDataSource.setDriverClass(env.getRequiredProperty(PROPERTY_NAME_DB_DRIVER_CLASS));
+//        boneCPDataSource.setJdbcUrl(env.getRequiredProperty(PROPERTY_NAME_DB_URL));
+//        boneCPDataSource.setUsername(env.getRequiredProperty(PROPERTY_NAME_DB_USER));
+//        boneCPDataSource.setPassword(env.getRequiredProperty(PROPERTY_NAME_DB_PASSWORD));
+//        boneCPDataSource.setIdleConnectionTestPeriodInMinutes(60);
+//        boneCPDataSource.setIdleMaxAgeInMinutes(420);
+//        boneCPDataSource.setMaxConnectionsPerPartition(30);
+//        boneCPDataSource.setMinConnectionsPerPartition(10);
+//        boneCPDataSource.setPartitionCount(3);
+//        boneCPDataSource.setAcquireIncrement(5);
+//        boneCPDataSource.setStatementsCacheSize(100);
+//
+//
+//        return boneCPDataSource;
+//
+//    }
     @Bean
     @Autowired
     public EntityManagerFactory entityManagerFactory(DataSource dataSource) {

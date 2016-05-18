@@ -1,0 +1,15 @@
+<div cg-busy="{promise:vm.queryPromise,message:'Loading',backdrop:true,minDuration:1000}">
+<div class="row-fluid" >
+  <h1>Product Detail</h1>
+  <div>
+    <div ng-repeat="image in vm.product.images" class="text-center" >
+      <img ng-src="data:{{image.contentType}};base64,{{image.content}}" class="thumbnail">
+
+    </div>
+    <div><strong>Name:</strong> {{vm.product.name}}</div>
+    <div><strong>Description:</strong> {{vm.product.description}}</div>
+    <div><strong>Price:</strong> {{vm.product.netPrice | number}}</div>
+  </div>
+
+</div>
+</div>
